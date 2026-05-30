@@ -1,0 +1,1 @@
+"""FairCV Dashboard components package."""
