@@ -1,209 +1,215 @@
-"""Project Overview page — hero, KPIs, pipeline diagram."""
-
 import streamlit as st
-import plotly.graph_objects as go
 
 
 def render_overview():
-    # ── Hero ──────────────────────────────────────────────────────────────
+    # ── Hero ──────────────────────────────────────────────────────────
     st.markdown("""
     <div class="hero-banner">
-        <div class="hero-title">AI Resume Screening<br/>& Fairness Audit System</div>
+        <div class="hero-title">FairCV Research Dashboard</div>
         <p class="hero-sub">
-            Investigating how classical ML models (LR, RF, MLP) classify job candidates using the 
-            FairCVdb dataset — with explicit measurement of gender and ethnicity bias introduced 
-            by biased training labels. Grounded in three peer-reviewed research papers.
+            A comparative study of Early, Late, and Weighted Hybrid Fusion strategies
+            for fair AI-based resume screening — using Sentence-BERT embeddings,
+            lightweight classifiers, and fairness-aware evaluation on FairCVdb.
         </p>
-        <div style="margin-top:1rem;">
-            <span class="tag tag-teal">FairCVdb · 24,000 profiles</span>
-            <span class="tag tag-amber">3 ML Models</span>
-            <span class="tag tag-violet">3 Research Papers</span>
-            <span class="tag tag-rose">Bias Measurement</span>
+        <div style="margin-top:0.8rem;">
+            <span class="tag tag-teal">FairCVdb</span>
+            <span class="tag tag-violet">Sentence-BERT</span>
+            <span class="tag tag-sky">Early Fusion</span>
+            <span class="tag tag-rose">Late Fusion</span>
+            <span class="tag tag-green">Hybrid Fusion</span>
+            <span class="tag tag-amber">Fairness Audit</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── KPI Cards ─────────────────────────────────────────────────────────
+    # ── KPI Row ───────────────────────────────────────────────────────
     kpis = [
-        ("24,000",  "Resume Profiles"),
-        ("8",       "Input Features"),
-        ("3",       "Label Variants"),
-        ("0.997",   "Best ROC-AUC"),
-        ("0.966",   "Best F1 Score"),
-        ("0.321",   "Max EO Gap (Eth.)"),
+        ("24,000",  "Resume Profiles",       "Synthetic, FairCVdb"),
+        ("3",       "Fusion Strategies",     "Early · Late · Hybrid"),
+        ("5",       "Research Questions",    "RQ1 – RQ5"),
+        ("12",      "Total Experiments",     "4 strategies × 3 classifiers"),
+        ("0.997",   "Best ROC-AUC",          "LR / MLP, Blind label"),
+        ("3",       "Fairness Metrics",      "DP · EOO · Disparate Impact"),
     ]
     cols = st.columns(6)
-    for col, (val, label) in zip(cols, kpis):
+    for col, (val, label, sub) in zip(cols, kpis):
         with col:
             st.markdown(f"""
             <div class="kpi-card">
                 <div class="kpi-value">{val}</div>
                 <div class="kpi-label">{label}</div>
+                <div style="font-size:0.68rem; color:#7d8590; margin-top:0.3rem;">{sub}</div>
             </div>
             """, unsafe_allow_html=True)
 
-    st.markdown("<br/>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Two columns: Objective + Pipeline ─────────────────────────────────
-    left, right = st.columns([1, 1.3], gap="large")
+    # ── Pipeline Diagram ──────────────────────────────────────────────
+    st.markdown('<div class="section-header">🔄 Experimental Pipeline</div>', unsafe_allow_html=True)
 
-    with left:
-        st.markdown('<div class="section-header">🎯 Problem Statement</div>', unsafe_allow_html=True)
-        st.markdown("""
-        <div class="insight-box">
-            <strong>Core Question:</strong> Can classical ML classifiers accurately screen resumes 
-            using only competency-based features — and do they remain fair when training labels 
-            encode gender or ethnicity bias?
+    st.markdown("""
+    <div style="background:#161b22; border:1px solid #30363d; border-radius:12px; padding:1.5rem 2rem; overflow-x:auto;">
+        <div style="display:flex; align-items:center; gap:0; min-width:700px; justify-content:center;">
+
+            <div style="text-align:center; flex:1;">
+                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
+                    <div style="font-size:1.4rem; margin-bottom:4px;">📂</div>
+                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#2dd4bf; font-weight:700;">FairCVdb</div>
+                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">24,000 profiles<br>60 columns</div>
+                </div>
+            </div>
+
+            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
+
+            <div style="text-align:center; flex:1;">
+                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
+                    <div style="font-size:1.4rem; margin-bottom:4px;">🧹</div>
+                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#f59e0b; font-weight:700;">Preprocessing</div>
+                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">Binarize labels<br>4 feature settings</div>
+                </div>
+            </div>
+
+            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
+
+            <div style="text-align:center; flex:1;">
+                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
+                    <div style="font-size:1.4rem; margin-bottom:4px;">🤖</div>
+                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#8b5cf6; font-weight:700;">SBERT Encoding</div>
+                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">all-MiniLM-L6-v2<br>bio_anonymized → 384d</div>
+                </div>
+            </div>
+
+            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
+
+            <div style="text-align:center; flex:1;">
+                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
+                    <div style="font-size:1.4rem; margin-bottom:4px;">🔀</div>
+                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#38bdf8; font-weight:700;">Fusion</div>
+                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">Early / Late<br>Hybrid</div>
+                </div>
+            </div>
+
+            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
+
+            <div style="text-align:center; flex:1;">
+                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
+                    <div style="font-size:1.4rem; margin-bottom:4px;">📊</div>
+                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#22c55e; font-weight:700;">Evaluation</div>
+                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">F1 · AUC<br>DP · EOO · DI</div>
+                </div>
+            </div>
+
+            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
+
+            <div style="text-align:center; flex:1;">
+                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
+                    <div style="font-size:1.4rem; margin-bottom:4px;">⚖️</div>
+                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#f43f5e; font-weight:700;">Fairness Audit</div>
+                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">Gender · Ethnicity<br>Bias Mitigation</div>
+                </div>
+            </div>
+
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
-        st.markdown("""
-        **Input → System → Output**
+    st.markdown("<br>", unsafe_allow_html=True)
 
-        | Component | Detail |
-        |-----------|--------|
-        | **Input** | 7 competency features + 3 label types |
-        | **Models** | Logistic Regression, Random Forest, MLP |
-        | **Output** | Binary: Recommended / Not Recommended |
-        | **Audit** | Demographic Parity Gap + Equality of Opportunity Gap |
+    # ── Research Questions ────────────────────────────────────────────
+    st.markdown('<div class="section-header">❓ Research Questions</div>', unsafe_allow_html=True)
 
-        **3 Label Scenarios Tested:**
-        - **Blind (Fair)** — scores purely from competency, no demographic penalty
-        - **Gender Biased** — female candidates penalized in training scores  
-        - **Ethnicity Biased** — one ethnic group overrated, another penalized
-        """)
-
-        st.markdown('<div class="section-header">🔑 Key Research Insight</div>', unsafe_allow_html=True)
-        st.markdown("""
-        <div class="warning-box">
-            ⚠️ <strong>Critical Finding:</strong> Logistic Regression achieves F1=0.966 and 
-            ROC-AUC=0.997 on fair labels, yet shows an Equality of Opportunity Gap of 
-            <strong>0.321 on Ethnicity-Biased labels</strong> — revealing that high 
-            classification accuracy does NOT guarantee fairness.
-        </div>
-        """, unsafe_allow_html=True)
-
-    with right:
-        st.markdown('<div class="section-header">⚙️ ML Pipeline</div>', unsafe_allow_html=True)
-
-        fig = _pipeline_diagram()
-        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-
-    # ── System Architecture ────────────────────────────────────────────────
-    st.markdown('<div class="section-header">🏗️ System Architecture</div>', unsafe_allow_html=True)
-
-    arch_cols = st.columns(5)
-    arch_steps = [
-        ("📦", "FairCVdb", "24K synthetic profiles\nimage + text + tabular\ngender & ethnicity labels"),
-        ("🔬", "EDA & Analysis", "Distribution analysis\nBias visualization\nFeature correlation"),
-        ("⚙️", "Preprocessing", "Label encoding\nTrain/val split\nFeature selection"),
-        ("🤖", "Model Training", "LR · RF · MLP\nHyperparam tuning\nCross-validation"),
-        ("⚖️", "Fairness Audit", "DP Gap\nEO Gap\nROC per label type"),
+    rqs = [
+        ("RQ1", "Predictive Performance",
+         "Which fusion strategy achieves better predictive performance in resume evaluation?",
+         "Evaluated via F1, ROC-AUC across Early, Late, Weighted Hybrid Fusion × LR, RF, MLP."),
+        ("RQ2", "Fairness Outcomes",
+         "Which fusion strategy produces fairer outcomes across demographic groups?",
+         "Measured via Demographic Parity Gap and Equal Opportunity Gap for gender and ethnicity."),
+        ("RQ3", "SBERT Contribution",
+         "Can Sentence-BERT embeddings improve both fairness and predictive accuracy?",
+         "Ablation: No Text (Structured Only) vs SBERT (all-MiniLM-L6-v2) on Early Fusion, RF."),
+        ("RQ4", "Bias Mitigation",
+         "How do lightweight bias mitigation techniques affect model performance?",
+         "Three techniques: sensitive attribute removal, attribute masking (bio_anonymized), sample reweighting."),
+        ("RQ5", "Accuracy–Fairness Trade-off",
+         "What trade-offs exist between fairness and accuracy in multimodal recruitment systems?",
+         "Scatter plot of F1 vs DP Gap across all 12 experiments to map the Pareto frontier."),
     ]
-    for col, (icon, title, detail) in zip(arch_cols, arch_steps):
+
+    col1, col2 = st.columns(2)
+    for i, (rq_id, rq_title, rq_q, rq_note) in enumerate(rqs):
+        col = col1 if i % 2 == 0 else col2
         with col:
             st.markdown(f"""
-            <div class="kpi-card" style="text-align:left; padding: 1rem;">
-                <div style="font-size:1.6rem; margin-bottom:0.4rem;">{icon}</div>
-                <div style="font-family:'Space Mono',monospace; font-size:0.85rem; color:#2dd4bf; margin-bottom:0.4rem;">{title}</div>
-                <div style="font-size:0.75rem; color:#7d8590; white-space:pre-line; line-height:1.6;">{detail}</div>
+            <div class="rq-card">
+                <div class="rq-number">{rq_id} · {rq_title}</div>
+                <div class="rq-question">{rq_q}</div>
+                <div class="rq-answer">{rq_note}</div>
             </div>
             """, unsafe_allow_html=True)
 
-    st.markdown("<br/>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Feature Overview Table ─────────────────────────────────────────────
-    st.markdown('<div class="section-header">📋 Feature Set Overview</div>', unsafe_allow_html=True)
-    c1, c2 = st.columns(2)
+    # ── Experimental Design Table ─────────────────────────────────────
+    st.markdown('<div class="section-header">🧪 Experimental Design</div>', unsafe_allow_html=True)
+
+    col_left, col_right = st.columns(2)
+
+    with col_left:
+        st.markdown("**Feature Settings (Baseline Phase)**")
+        st.markdown("""
+        <table class="result-table">
+        <thead><tr><th>Setting</th><th>Features</th><th>Purpose</th></tr></thead>
+        <tbody>
+        <tr><td class="mono">A</td><td>Competency Only (8)</td><td>Merit-based baseline</td></tr>
+        <tr><td class="mono">B</td><td>Competency + Demographics</td><td>Proxy bias measurement</td></tr>
+        <tr><td class="mono">C</td><td>Competency + Face Emb (20d)</td><td>Face-aware model</td></tr>
+        <tr><td class="mono">D</td><td>Competency + Blind Face Emb</td><td>De-biased face model</td></tr>
+        </tbody></table>
+        """, unsafe_allow_html=True)
+
+    with col_right:
+        st.markdown("**Fusion Experiments (Main Phase)**")
+        st.markdown("""
+        <table class="result-table">
+        <thead><tr><th>Strategy</th><th>Input Dim</th><th>Label</th></tr></thead>
+        <tbody>
+        <tr><td>Baseline</td><td>8 (structured)</td><td>blind_label</td></tr>
+        <tr><td>Early Fusion</td><td>384 + 8 = 392</td><td>blind_label</td></tr>
+        <tr><td>Late Fusion</td><td>β·P_text + (1-β)·P_struct</td><td>blind_label</td></tr>
+        <tr><td>Weighted Hybrid</td><td>α·F_text + (1-α)·F_struct</td><td>blind_label</td></tr>
+        </tbody></table>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # ── Key Finding Preview ───────────────────────────────────────────
+    st.markdown('<div class="section-header">🔑 Key Findings Preview</div>', unsafe_allow_html=True)
+
+    c1, c2, c3 = st.columns(3)
     with c1:
         st.markdown("""
-        **Candidate Competency Features (used in Setting A)**
-
-        | Feature | Range | Type |
-        |---------|-------|------|
-        | Suitability | {0.25, 0.5, 0.75, 1.0} | Categorical |
-        | Education | {0.2, 0.4, 0.6, 0.8, 1.0} | Ordinal |
-        | Experience | {0–1.0, step 0.2} | Ordinal |
-        | Recommendation | {0, 1} | Binary |
-        | Availability | {0.2–1.0, step 0.2} | Ordinal |
-        | Language 1 | {0–1.0, step 0.2} | Ordinal |
-        | Language 2 | {0–1.0, step 0.2} | Ordinal |
-        | Language 3 | {0–1.0, step 0.2} | Ordinal |
-        """)
+        <div class="insight-box">
+            <strong>High Accuracy Achieved</strong><br>
+            All three baseline models (LR, RF, MLP) reach F1 ≥ 0.936 and AUC ≥ 0.987
+            on the fair blind label — confirming FairCVdb is learnable from competency features alone.
+        </div>
+        """, unsafe_allow_html=True)
     with c2:
         st.markdown("""
-        **Feature Settings Tested**
-
-        | Setting | Features Included |
-        |---------|-------------------|
-        | **A: Comp Only** | 7 competency features only |
-        | **B: +Demo** | + Gender & Ethnicity columns |
-        | **C: +Face** | + Biased face embeddings (20-dim) |
-        | **D: +Blind Face** | + Agnostic face embeddings (20-dim) |
-
-        **Key observation:** Performance differences across Settings A–D are 
-        minimal (<0.01 F1 for LR/MLP), suggesting competency features already 
-        capture most signal. RF degrades with face embeddings added (C/D).
-        """)
-
-
-# ── Helper: pipeline Sankey/flow diagram ────────────────────────────────────
-def _pipeline_diagram() -> go.Figure:
-    fig = go.Figure()
-
-    nodes = [
-        "FairCVdb\n(24K)", "Competency\nFeatures", "Label\nTypes",
-        "LR", "RF", "MLP",
-        "Accuracy\nMetrics", "Fairness\nAudit"
-    ]
-    positions = [
-        (0.05, 0.5),
-        (0.25, 0.7), (0.25, 0.3),
-        (0.55, 0.82), (0.55, 0.5), (0.55, 0.18),
-        (0.85, 0.7), (0.85, 0.3),
-    ]
-    colors_node = [
-        "#2dd4bf", "#38bdf8", "#f59e0b",
-        "#38bdf8", "#22c55e", "#fb923c",
-        "#8b5cf6", "#f43f5e",
-    ]
-    edges = [
-        (0, 1), (0, 2),
-        (1, 3), (1, 4), (1, 5),
-        (2, 3), (2, 4), (2, 5),
-        (3, 6), (4, 6), (5, 6),
-        (3, 7), (4, 7), (5, 7),
-    ]
-
-    for (x0, y0), (x1, y1) in [(positions[i], positions[j]) for i, j in edges]:
-        fig.add_shape(type="line", x0=x0, y0=y0, x1=x1, y1=y1,
-                      line=dict(color="#30363d", width=1.5),
-                      xref="paper", yref="paper")
-
-    for (x, y), label, color in zip(positions, nodes, colors_node):
-        fig.add_shape(type="rect",
-                      x0=x-0.085, y0=y-0.09, x1=x+0.085, y1=y+0.09,
-                      fillcolor=f"rgba({_hex_to_rgb(color)},0.12)",
-                      line=dict(color=color, width=1.5),
-                      xref="paper", yref="paper")
-        fig.add_annotation(x=x, y=y, text=label.replace("\n", "<br>"),
-                            font=dict(size=9, color=color, family="Space Mono"),
-                            showarrow=False, xref="paper", yref="paper",
-                            align="center")
-
-    fig.update_layout(
-        height=320,
-        margin=dict(l=0, r=0, t=10, b=10),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        xaxis=dict(visible=False, range=[0, 1]),
-        yaxis=dict(visible=False, range=[0, 1]),
-        showlegend=False,
-    )
-    return fig
-
-
-def _hex_to_rgb(h: str) -> str:
-    h = h.lstrip("#")
-    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
-    return f"{r},{g},{b}"
+        <div class="warning-box">
+            <strong>⚠️ Accuracy ≠ Fairness</strong><br>
+            LR achieves the highest AUC (0.997) but also the worst
+            Equality of Opportunity gap on the ethnicity-biased label (EOO=0.321),
+            demonstrating that accuracy metrics can mask demographic disparities.
+        </div>
+        """, unsafe_allow_html=True)
+    with c3:
+        st.markdown("""
+        <div class="amber-box">
+            <strong>Suitability Dominates</strong><br>
+            Both LR (coef=10.446) and RF (Gini=0.2796) confirm Suitability as the
+            most influential feature — followed by Recommendation and Language proficiency.
+            Availability is consistently least important.
+        </div>
+        """, unsafe_allow_html=True)
