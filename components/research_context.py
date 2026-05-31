@@ -7,7 +7,7 @@ def render_research():
         <div class="hero-title">📚 Research Context</div>
         <p class="hero-sub">
             Three key papers informing the FairCV research framework — covering the dataset,
-            fusion methodology, LLM bias benchmarking, and the Sentence-BERT text encoder.
+            fusion methodology, and LLM bias benchmarking.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -93,26 +93,6 @@ In: Proceedings of the European Workshop on Algorithmic Fairness (EWAF'24), 2024
         st.code("""Wen et al.
 FAIRE: Assessing Racial and Gender Bias in AI-Driven Resume Evaluations.
 arXiv:2504.01420, 2025.""", language="text")
-
-    # ── Supporting Reference ──────────────────────────────────────────
-    st.markdown('<div class="section-header">📄 Supporting Reference — Text Encoder</div>', unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="paper-card" style="border-left:3px solid #8b5cf6;">
-        <div class="paper-title">Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks</div>
-        <div class="paper-meta">Reimers N, Gurevych I · EMNLP 2019</div>
-        <div style="font-size:0.88rem;line-height:1.7;color:#e6edf3;">
-            Foundational paper for the text encoder used in all fusion experiments.
-            Sentence-BERT produces semantically meaningful sentence embeddings by fine-tuning BERT with a siamese network structure.
-            We use the <code style="background:#0d1117;padding:1px 4px;border-radius:3px;">all-MiniLM-L6-v2</code> variant —
-            a distilled model optimized for speed and CPU inference, producing 384-dimensional embeddings.
-            Compared to TF-IDF, SBERT captures contextual meaning and paraphrase relationships,
-            enabling richer semantic representation of resume biographies.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
 
     # ── Cross-Paper Synthesis ─────────────────────────────────────────
     st.markdown('<div class="section-header">🔗 Cross-Paper Synthesis</div>', unsafe_allow_html=True)

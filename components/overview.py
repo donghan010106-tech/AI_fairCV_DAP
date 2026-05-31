@@ -47,71 +47,43 @@ def render_overview():
     # ── Pipeline Diagram ──────────────────────────────────────────────
     st.markdown('<div class="section-header">🔄 Experimental Pipeline</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div style="background:#161b22; border:1px solid #30363d; border-radius:12px; padding:1.5rem 2rem; overflow-x:auto;">
-        <div style="display:flex; align-items:center; gap:0; min-width:700px; justify-content:center;">
+    steps = [
+        ("📂", "FairCVdb",       "#2dd4bf", "24,000 profiles\n60 columns"),
+        ("🧹", "Preprocessing",  "#f59e0b", "Binarize labels\n4 feature settings"),
+        ("🤖", "SBERT Encoding", "#8b5cf6", "all-MiniLM-L6-v2\nbio_anonymized → 384d"),
+        ("🔀", "Fusion",         "#38bdf8", "Early / Late\nHybrid"),
+        ("📊", "Evaluation",     "#22c55e", "F1 · AUC\nDP · EOO · DI"),
+        ("⚖️", "Fairness Audit", "#f43f5e", "Gender · Ethnicity\nBias Mitigation"),
+    ]
 
-            <div style="text-align:center; flex:1;">
-                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
-                    <div style="font-size:1.4rem; margin-bottom:4px;">📂</div>
-                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#2dd4bf; font-weight:700;">FairCVdb</div>
-                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">24,000 profiles<br>60 columns</div>
+    # interleave 6 steps + 5 arrows = 11 columns
+    widths = [2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2]
+    cols = st.columns(widths)
+
+    step_idx = 0
+    for i, col in enumerate(cols):
+        if i % 2 == 0:                          # step column
+            emoji, title, color, subtitle = steps[step_idx]
+            step_idx += 1
+            with col:
+                st.markdown(f"""
+                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px;
+                            padding:0.8rem 0.4rem; text-align:center;">
+                    <div style="font-size:1.3rem; margin-bottom:4px;">{emoji}</div>
+                    <div style="font-family:'Space Mono',monospace; font-size:0.68rem;
+                                color:{color}; font-weight:700; line-height:1.3;">{title}</div>
+                    <div style="font-size:0.6rem; color:#7d8590; margin-top:3px; line-height:1.4;">
+                        {subtitle.replace(chr(10), "<br>")}
+                    </div>
                 </div>
-            </div>
-
-            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
-
-            <div style="text-align:center; flex:1;">
-                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
-                    <div style="font-size:1.4rem; margin-bottom:4px;">🧹</div>
-                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#f59e0b; font-weight:700;">Preprocessing</div>
-                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">Binarize labels<br>4 feature settings</div>
-                </div>
-            </div>
-
-            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
-
-            <div style="text-align:center; flex:1;">
-                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
-                    <div style="font-size:1.4rem; margin-bottom:4px;">🤖</div>
-                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#8b5cf6; font-weight:700;">SBERT Encoding</div>
-                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">all-MiniLM-L6-v2<br>bio_anonymized → 384d</div>
-                </div>
-            </div>
-
-            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
-
-            <div style="text-align:center; flex:1;">
-                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
-                    <div style="font-size:1.4rem; margin-bottom:4px;">🔀</div>
-                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#38bdf8; font-weight:700;">Fusion</div>
-                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">Early / Late<br>Hybrid</div>
-                </div>
-            </div>
-
-            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
-
-            <div style="text-align:center; flex:1;">
-                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
-                    <div style="font-size:1.4rem; margin-bottom:4px;">📊</div>
-                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#22c55e; font-weight:700;">Evaluation</div>
-                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">F1 · AUC<br>DP · EOO · DI</div>
-                </div>
-            </div>
-
-            <div style="color:#30363d; font-size:1.2rem; padding:0 0.3rem; flex:0;">→</div>
-
-            <div style="text-align:center; flex:1;">
-                <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px; padding:0.8rem 0.5rem;">
-                    <div style="font-size:1.4rem; margin-bottom:4px;">⚖️</div>
-                    <div style="font-family:'Space Mono',monospace; font-size:0.72rem; color:#f43f5e; font-weight:700;">Fairness Audit</div>
-                    <div style="font-size:0.65rem; color:#7d8590; margin-top:2px;">Gender · Ethnicity<br>Bias Mitigation</div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
+        else:                                   # arrow column
+            with col:
+                st.markdown(
+                    "<div style='text-align:center; color:#7d8590; font-size:1rem; "
+                    "padding-top:1.2rem;'>→</div>",
+                    unsafe_allow_html=True,
+                )
 
     st.markdown("<br>", unsafe_allow_html=True)
 

@@ -84,7 +84,7 @@ fairCV_dashboard/
 | 🔬 **Baseline Models** | LR / RF / MLP on Setting A — hyperparameter tuning, coefficients, feature importance, ROC, confusion matrices, overfitting check |
 | 🔀 **Fusion Strategies** | SBERT explainer, Early/Late/Hybrid architecture cards, RQ1–RQ5 findings with trade-off plot |
 | ⚖️ **Fairness Analysis** | DP / EOO / DI metrics, fairness gap charts, positive prediction rates, group-wise CMs, summary insights |
-| 📚 **Research Context** | Paper summaries (Peña 2023, Swati 2024, Wen 2025, Reimers 2019), cross-paper synthesis table |
+| 📚 **Research Context** | Paper summaries (Peña 2023, Swati 2024, Wen 2025), cross-paper synthesis table |
 
 ---
 
@@ -217,7 +217,6 @@ demonstrating that accuracy metrics can completely mask demographic discriminati
 1. **Peña et al. (2023)** — FairCVdb dataset & FairCVtest framework *(Springer Nature Computer Science)*
 2. **Swati et al. (2024)** — Fusion techniques in multimodal AI recruitment *(EWAF'24)*
 3. **Wen et al. (2025)** — FAIRE: LLM bias benchmark for resume evaluations *(arXiv:2504.01420)*
-4. **Reimers & Gurevych (2019)** — Sentence-BERT text encoder *(EMNLP 2019)*
 
 ---
 
