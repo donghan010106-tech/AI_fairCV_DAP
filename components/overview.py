@@ -2,7 +2,6 @@ import streamlit as st
 
 
 def render_overview():
-    # ── Hero ──────────────────────────────────────────────────────────
     st.markdown("""
     <div class="hero-banner">
         <div class="hero-title">FairCV Research Dashboard</div>
@@ -22,14 +21,14 @@ def render_overview():
     </div>
     """, unsafe_allow_html=True)
 
-    # ── KPI Row ───────────────────────────────────────────────────────
+    # KPI Row
     kpis = [
-        ("24,000",  "Resume Profiles",       "Synthetic, FairCVdb"),
-        ("3",       "Fusion Strategies",     "Early · Late · Hybrid"),
-        ("5",       "Research Questions",    "RQ1 – RQ5"),
-        ("12",      "Total Experiments",     "4 strategies × 3 classifiers"),
-        ("0.997",   "Best ROC-AUC",          "LR / MLP, Blind label"),
-        ("3",       "Fairness Metrics",      "DP · EOO · Disparate Impact"),
+        ("24,000",  "Resume Profiles",    "Synthetic, FairCVdb"),
+        ("3",       "Fusion Strategies",  "Early · Late · Hybrid"),
+        ("5",       "Research Questions", "RQ1 – RQ5"),
+        ("12",      "Total Experiments",  "4 strategies x 3 classifiers"),
+        ("0.997",   "Best ROC-AUC",       "LR / MLP, Blind label"),
+        ("3",       "Fairness Metrics",   "DP · EOO · Disparate Impact"),
     ]
     cols = st.columns(6)
     for col, (val, label, sub) in zip(cols, kpis):
@@ -44,32 +43,29 @@ def render_overview():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Pipeline Diagram ──────────────────────────────────────────────
-    st.markdown('<div class="section-header">🔄 Experimental Pipeline</div>', unsafe_allow_html=True)
+    # Pipeline
+    st.markdown('<div class="section-header">Experimental Pipeline</div>', unsafe_allow_html=True)
 
     steps = [
-        ("📂", "FairCVdb",       "#2dd4bf", "24,000 profiles\n60 columns"),
-        ("🧹", "Preprocessing",  "#f59e0b", "Binarize labels\n4 feature settings"),
-        ("🤖", "SBERT Encoding", "#8b5cf6", "all-MiniLM-L6-v2\nbio_anonymized → 384d"),
-        ("🔀", "Fusion",         "#38bdf8", "Early / Late\nHybrid"),
-        ("📊", "Evaluation",     "#22c55e", "F1 · AUC\nDP · EOO · DI"),
-        ("⚖️", "Fairness Audit", "#f43f5e", "Gender · Ethnicity\nBias Mitigation"),
+        ("FairCVdb",       "#2dd4bf", "24,000 profiles\n60 columns"),
+        ("Preprocessing",  "#f59e0b", "Binarize labels\n4 feature settings"),
+        ("SBERT Encoding", "#8b5cf6", "all-MiniLM-L6-v2\nbio_anonymized 384d"),
+        ("Fusion",         "#38bdf8", "Early / Late\nHybrid"),
+        ("Evaluation",     "#22c55e", "F1 · AUC\nDP · EOO · DI"),
+        ("Fairness Audit", "#f43f5e", "Gender · Ethnicity\nBias Mitigation"),
     ]
 
-    # interleave 6 steps + 5 arrows = 11 columns
     widths = [2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2]
     cols = st.columns(widths)
-
     step_idx = 0
     for i, col in enumerate(cols):
-        if i % 2 == 0:                          # step column
-            emoji, title, color, subtitle = steps[step_idx]
+        if i % 2 == 0:
+            title, color, subtitle = steps[step_idx]
             step_idx += 1
             with col:
                 st.markdown(f"""
                 <div style="background:#1c2128; border:1px solid #30363d; border-radius:10px;
                             padding:0.8rem 0.4rem; text-align:center;">
-                    <div style="font-size:1.3rem; margin-bottom:4px;">{emoji}</div>
                     <div style="font-family:'Space Mono',monospace; font-size:0.68rem;
                                 color:{color}; font-weight:700; line-height:1.3;">{title}</div>
                     <div style="font-size:0.6rem; color:#7d8590; margin-top:3px; line-height:1.4;">
@@ -77,23 +73,21 @@ def render_overview():
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
-        else:                                   # arrow column
+        else:
             with col:
                 st.markdown(
-                    "<div style='text-align:center; color:#7d8590; font-size:1rem; "
-                    "padding-top:1.2rem;'>→</div>",
-                    unsafe_allow_html=True,
-                )
+                    "<div style='text-align:center; color:#7d8590; font-size:1rem; padding-top:0.9rem;'>→</div>",
+                    unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Research Questions ────────────────────────────────────────────
-    st.markdown('<div class="section-header">❓ Research Questions</div>', unsafe_allow_html=True)
+    # Research Questions
+    st.markdown('<div class="section-header">Research Questions</div>', unsafe_allow_html=True)
 
     rqs = [
         ("RQ1", "Predictive Performance",
          "Which fusion strategy achieves better predictive performance in resume evaluation?",
-         "Evaluated via F1, ROC-AUC across Early, Late, Weighted Hybrid Fusion × LR, RF, MLP."),
+         "Evaluated via F1, ROC-AUC across Early, Late, Weighted Hybrid Fusion x LR, RF, MLP."),
         ("RQ2", "Fairness Outcomes",
          "Which fusion strategy produces fairer outcomes across demographic groups?",
          "Measured via Demographic Parity Gap and Equal Opportunity Gap for gender and ethnicity."),
@@ -102,8 +96,8 @@ def render_overview():
          "Ablation: No Text (Structured Only) vs SBERT (all-MiniLM-L6-v2) on Early Fusion, RF."),
         ("RQ4", "Bias Mitigation",
          "How do lightweight bias mitigation techniques affect model performance?",
-         "Three techniques: sensitive attribute removal, attribute masking (bio_anonymized), sample reweighting."),
-        ("RQ5", "Accuracy–Fairness Trade-off",
+         "Three techniques: sensitive attribute removal, attribute masking, sample reweighting."),
+        ("RQ5", "Accuracy-Fairness Trade-off",
          "What trade-offs exist between fairness and accuracy in multimodal recruitment systems?",
          "Scatter plot of F1 vs DP Gap across all 12 experiments to map the Pareto frontier."),
     ]
@@ -122,11 +116,10 @@ def render_overview():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Experimental Design Table ─────────────────────────────────────
-    st.markdown('<div class="section-header">🧪 Experimental Design</div>', unsafe_allow_html=True)
+    # Experimental Design
+    st.markdown('<div class="section-header">Experimental Design</div>', unsafe_allow_html=True)
 
     col_left, col_right = st.columns(2)
-
     with col_left:
         st.markdown("**Feature Settings (Baseline Phase)**")
         st.markdown("""
@@ -148,29 +141,29 @@ def render_overview():
         <tbody>
         <tr><td>Baseline</td><td>8 (structured)</td><td>blind_label</td></tr>
         <tr><td>Early Fusion</td><td>384 + 8 = 392</td><td>blind_label</td></tr>
-        <tr><td>Late Fusion</td><td>β·P_text + (1-β)·P_struct</td><td>blind_label</td></tr>
-        <tr><td>Weighted Hybrid</td><td>α·F_text + (1-α)·F_struct</td><td>blind_label</td></tr>
+        <tr><td>Late Fusion</td><td>beta·P_text + (1-beta)·P_struct</td><td>blind_label</td></tr>
+        <tr><td>Weighted Hybrid</td><td>alpha·F_text + (1-alpha)·F_struct</td><td>blind_label</td></tr>
         </tbody></table>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Key Finding Preview ───────────────────────────────────────────
-    st.markdown('<div class="section-header">🔑 Key Findings Preview</div>', unsafe_allow_html=True)
+    # Key Findings
+    st.markdown('<div class="section-header">Key Findings Preview</div>', unsafe_allow_html=True)
 
     c1, c2, c3 = st.columns(3)
     with c1:
         st.markdown("""
         <div class="insight-box">
             <strong>High Accuracy Achieved</strong><br>
-            All three baseline models (LR, RF, MLP) reach F1 ≥ 0.936 and AUC ≥ 0.987
+            All three baseline models reach F1 >= 0.936 and AUC >= 0.987
             on the fair blind label — confirming FairCVdb is learnable from competency features alone.
         </div>
         """, unsafe_allow_html=True)
     with c2:
         st.markdown("""
         <div class="warning-box">
-            <strong>⚠️ Accuracy ≠ Fairness</strong><br>
+            <strong>Accuracy does not equal Fairness</strong><br>
             LR achieves the highest AUC (0.997) but also the worst
             Equality of Opportunity gap on the ethnicity-biased label (EOO=0.321),
             demonstrating that accuracy metrics can mask demographic disparities.

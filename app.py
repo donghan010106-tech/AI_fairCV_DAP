@@ -140,12 +140,12 @@ from components.research_context  import render_research
 
 def main():
     page = render_sidebar()
-    if   page == "🏠 Project Overview":  render_overview()
-    elif page == "🗄️ Dataset & EDA":     render_dataset()
-    elif page == "🔬 Baseline Models":   render_baseline()
-    elif page == "🔀 Fusion Strategies": render_fusion()
-    elif page == "⚖️ Fairness Analysis": render_fairness()
-    elif page == "📚 Research Context":  render_research()
+    if   page == "Project Overview":  render_overview()
+    elif page == "Dataset & EDA":     render_dataset()
+    elif page == "Baseline Models":   render_baseline()
+    elif page == "Fusion Strategies": render_fusion()
+    elif page == "Fairness Analysis": render_fairness()
+    elif page == "Research Context":  render_research()
 
 if __name__ == "__main__":
     main()
