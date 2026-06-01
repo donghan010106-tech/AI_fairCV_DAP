@@ -1,21 +1,15 @@
-"""
-FairCV Research Dashboard — AI Resume Screening & Bias Analysis
-Refactored to align with final proposal and experimental results.
-"""
-
 import streamlit as st
 
 st.set_page_config(
     page_title="FairCV Research Dashboard",
-    page_icon="⚖️",
+    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# --- Global CSS ---
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
     --bg-primary:    #0d1117;
@@ -72,27 +66,24 @@ div[data-testid="stExpander"] { background: var(--bg-card) !important; border: 1
 .tag-sky    { background: rgba(56,189,248,0.15);  color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
 .tag-green  { background: rgba(34,197,94,0.15);   color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
 
-.kpi-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem 1.6rem; text-align: center; transition: border-color 0.2s; }
-.kpi-card:hover { border-color: var(--accent-teal); }
+.kpi-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem 1.6rem; text-align: center; }
 .kpi-value { font-family: 'Space Mono', monospace; font-size: 2rem; font-weight: 700; color: var(--accent-teal); line-height: 1; margin-bottom: 0.3rem; }
 .kpi-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
 .section-header { font-family: 'Space Mono', monospace; font-size: 1.3rem; color: var(--accent-teal); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin: 2rem 0 1.2rem 0; }
 
 .insight-box  { background: var(--bg-card2); border-left: 3px solid var(--accent-teal);   border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.6; }
-.warning-box  { background: rgba(244,63,94,0.08);  border-left: 3px solid var(--accent-rose);   border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; }
-.amber-box    { background: rgba(245,158,11,0.08); border-left: 3px solid var(--accent-amber);  border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; }
-.green-box    { background: rgba(34,197,94,0.08);  border-left: 3px solid var(--accent-green);  border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; }
-.violet-box   { background: rgba(139,92,246,0.08); border-left: 3px solid var(--accent-violet); border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; }
+.warning-box  { background: rgba(244,63,94,0.08);  border-left: 3px solid var(--accent-rose);   border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.6; }
+.amber-box    { background: rgba(245,158,11,0.08); border-left: 3px solid var(--accent-amber);  border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.6; }
+.green-box    { background: rgba(34,197,94,0.08);  border-left: 3px solid var(--accent-green);  border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.6; }
+.violet-box   { background: rgba(139,92,246,0.08); border-left: 3px solid var(--accent-violet); border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.6; }
 
 .model-badge { display: inline-block; padding: 3px 12px; border-radius: 6px; font-family: 'Space Mono', monospace; font-size: 0.78rem; font-weight: 700; }
 .badge-lr    { background: rgba(56,189,248,0.15);  color: #38bdf8; }
 .badge-rf    { background: rgba(34,197,94,0.15);   color: #22c55e; }
 .badge-mlp   { background: rgba(251,146,60,0.15);  color: #fb923c; }
-.badge-paper { background: rgba(139,92,246,0.15);  color: #8b5cf6; }
 
-.fusion-card  { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem 1.6rem; margin-bottom: 1rem; transition: all 0.2s; }
-.fusion-card:hover { border-color: var(--accent-violet); }
+.fusion-card  { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem 1.6rem; margin-bottom: 1rem; }
 .fusion-early  { border-top: 3px solid #38bdf8; }
 .fusion-late   { border-top: 3px solid #f43f5e; }
 .fusion-hybrid { border-top: 3px solid #22c55e; }
@@ -100,10 +91,10 @@ div[data-testid="stExpander"] { background: var(--bg-card) !important; border: 1
 .fusion-title  { font-family: 'Space Mono', monospace; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
 .fusion-formula { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem 1rem; margin: 0.6rem 0; font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--accent-amber); text-align: center; }
 
-.rq-card    { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 0.8rem; }
-.rq-number  { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; }
+.rq-card     { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 0.8rem; }
+.rq-number   { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; }
 .rq-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
-.rq-answer  { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+.rq-answer   { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
 
 .paper-card  { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem 1.6rem; margin-bottom: 1rem; }
 .paper-title { font-family: 'Space Mono', monospace; font-size: 0.95rem; color: var(--accent-sky); margin-bottom: 0.4rem; }
@@ -119,13 +110,10 @@ div[data-testid="stExpander"] { background: var(--bg-card) !important; border: 1
 
 [data-testid="stMarkdownContainer"] p { color: var(--text-primary); line-height: 1.65; }
 .stButton > button { background: rgba(45,212,191,0.1) !important; border: 1px solid rgba(45,212,191,0.4) !important; color: var(--accent-teal) !important; font-family: 'Space Mono', monospace !important; border-radius: 6px !important; }
-.stButton > button:hover { background: rgba(45,212,191,0.2) !important; border-color: var(--accent-teal) !important; }
-.stSelectbox > div > div { background: var(--bg-card) !important; border-color: var(--border) !important; color: var(--text-primary) !important; }
+.stButton > button:hover { background: rgba(45,212,191,0.2) !important; }
 [data-baseweb="tab"] { color: var(--text-muted) !important; }
 [aria-selected="true"] { color: var(--accent-teal) !important; border-bottom: 2px solid var(--accent-teal) !important; }
 .stTabs [data-baseweb="tab-list"] { background: var(--bg-card) !important; border-radius: 8px; padding: 4px; }
-.stDataFrame { background: var(--bg-card) !important; }
-[data-testid="stTable"] th { background: var(--bg-card2) !important; color: var(--text-muted) !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -139,13 +127,32 @@ from components.research_context  import render_research
 
 
 def main():
-    page = render_sidebar()
-    if   page == "Project Overview":  render_overview()
-    elif page == "Dataset & EDA":     render_dataset()
-    elif page == "Baseline Models":   render_baseline()
-    elif page == "Fusion Strategies": render_fusion()
-    elif page == "Fairness Analysis": render_fairness()
-    elif page == "Research Context":  render_research()
+    try:
+        page = render_sidebar()
+    except Exception as e:
+        st.error(f"Sidebar error: {e}")
+        return
+
+    dispatch = {
+        "Project Overview":  render_overview,
+        "Dataset & EDA":     render_dataset,
+        "Baseline Models":   render_baseline,
+        "Fusion Strategies": render_fusion,
+        "Fairness Analysis": render_fairness,
+        "Research Context":  render_research,
+    }
+
+    fn = dispatch.get(page)
+    if fn:
+        try:
+            fn()
+        except Exception as e:
+            st.error(f"Page render error on '{page}': {e}")
+            import traceback
+            st.code(traceback.format_exc())
+    else:
+        st.error(f"Unknown page: '{page}'")
+
 
 if __name__ == "__main__":
     main()
