@@ -54,25 +54,24 @@ fairCV_dashboard/
 │   └── research_context.py          # Research Papers page
 │
 └── data/
-|   └── images/                      # Experimental result charts (PNG)
-|        ├── compare_cm.png           # Confusion matrices — all models × all labels
-|        ├── compare_fairness.png     # Fairness gaps — all models × all labels
-│        ├── compare_perf.png         # Performance comparison — all settings
-│        ├── compare_roc.png          # ROC curves — all models
-│        ├── fairness_group_cm.png    # Group-wise confusion matrices (RF, gender biased)
-│        ├── fairness_pos_rate.png    # Positive prediction rate by group
-│        ├── lr_coef.png              # LR coefficients + confusion matrix
-│        ├── lr_hyperparam.png        # LR hyperparameter tuning curve
-│        ├── lr_roc.png               # LR ROC by label type
-│        ├── mlp_cm.png               # MLP confusion matrices by label
-│        ├── mlp_loss_curves.png      # MLP training loss curves
-│        ├── overfitting.png          # CV vs Test F1 overfitting check
-│        ├── rf_importance.png        # RF feature importance (blind label)
-│        ├── rf_importance_by_label.png # RF feature importance across label types
-│        ├── rf_roc.png               # RF ROC curves
-│        └── tradeoff_plot.png        # RQ5 Accuracy–Fairness trade-off scatter
-└── dataset/
-    └──FairCVdb.csv
+   └── images/                      # Experimental result charts (PNG)
+        ├── compare_cm.png           # Confusion matrices — all models × all labels
+        ├── compare_fairness.png     # Fairness gaps — all models × all labels
+        ├── compare_perf.png         # Performance comparison — all settings
+        ├── compare_roc.png          # ROC curves — all models
+        ├── fairness_group_cm.png    # Group-wise confusion matrices (RF, gender biased)
+        ├── fairness_pos_rate.png    # Positive prediction rate by group
+        ├── lr_coef.png              # LR coefficients + confusion matrix
+        ├── lr_hyperparam.png        # LR hyperparameter tuning curve
+        ├── lr_roc.png               # LR ROC by label type
+        ├── mlp_cm.png               # MLP confusion matrices by label
+        ├── mlp_loss_curves.png      # MLP training loss curves
+        ├── overfitting.png          # CV vs Test F1 overfitting check
+        ├── rf_importance.png        # RF feature importance (blind label)
+        ├── rf_importance_by_label.png # RF feature importance across label types
+        ├── rf_roc.png               # RF ROC curves
+        └── tradeoff_plot.png        # RQ5 Accuracy–Fairness trade-off scatter
+
 ```
 
 ---
